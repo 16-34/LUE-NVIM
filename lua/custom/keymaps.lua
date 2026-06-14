@@ -71,3 +71,12 @@ vim.keymap.set({ "n", "t" }, "<C-`>", function()
         vim.cmd("botright split | terminal") -- 首次创建
     end
 end, { desc = "切换终端" })
+
+-- 折行
+vim.keymap.set({ "n", "i" }, "<M-z>", function()
+    local wrap = not vim.opt_local.wrap:get()
+
+    vim.opt_local.wrap = wrap
+    vim.opt_local.linebreak = wrap
+    vim.opt_local.breakindent = wrap
+end, { desc = "切换折行" })
