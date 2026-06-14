@@ -31,6 +31,7 @@ local modules = {
     "plugins.flash",
     "plugins.nvim-ufo",
 
+    "plugins.lualine",
     "plugins.dropbar",
     "plugins.outline",
 

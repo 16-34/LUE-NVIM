@@ -32,12 +32,6 @@ vim.opt.laststatus = 3
 -- vim.opt.cmdheight = 0
 vim.opt.showmode = false
 
--- icon 模式 --
-require("utils.status-line-icon")
-
--- -- 纯文本模式 --
--- require("utils.status-line-text")
-
 if vim.g.neovide then
     vim.g.neovide_hide_mouse_when_typing = true
     vim.o.guifont = "JetBrainsMono Nerd Font:h14"
