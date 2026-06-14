@@ -23,13 +23,19 @@ end
 
 local move_ok, mini_move = pcall(require, "mini.move")
 if move_ok then
-    mini_move.setup()
+    mini_move.setup({
+        mappings = {
+            left = '<M-[>',
+            right = '<M-]>',
 
-    vim.keymap.set("i", "<M-h>", "<C-d>", { desc = "向左缩进" })
-    vim.keymap.set("i", "<M-l>", "<C-t>", { desc = "向右缩进" })
+            line_left = '<M-[>',
+            line_right = '<M-]>',
+        },
+    })
 
-    vim.keymap.set("v", "<M-h>", "<gv", { desc = "向左缩进" })
-    vim.keymap.set("v", "<M-l>", ">gv", { desc = "向右缩进" })
+    -- 重新覆盖可视模式缩进
+    vim.keymap.set("v", "<M-[>", "<gv", { desc = "向左缩进" })
+    vim.keymap.set("v", "<M-]>", ">gv", { desc = "向右缩进" })
 end
 
 local pairs_ok, mini_pairs = pcall(require, "mini.pairs")
