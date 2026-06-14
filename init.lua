@@ -37,6 +37,7 @@ local modules = {
     "plugins.noice",
     "plugins.which-key",
     "plugins.conform",
+    "plugins.render-markdown",
     "plugins.im-select",
 }
 
