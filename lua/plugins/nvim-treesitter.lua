@@ -19,7 +19,7 @@ treesitter.install({
     "markdown_inline",
     "bash",
     "zsh",
-})
+}, { max_jobs = 1 })
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = {

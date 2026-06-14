@@ -23,7 +23,7 @@ if ok then
         "latex",
         "html",
         "yaml",
-    })
+    }, { max_jobs = 1 })
 end
 
 -- pipx install pylatexenc 或 npm install -g libtexprintf
