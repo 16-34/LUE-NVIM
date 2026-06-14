@@ -12,6 +12,11 @@ function ModeName()
     return modes[vim.fn.mode()] or "UNKNOWN"
 end
 
+function RecordingStatus()
+    local register = vim.fn.reg_recording()
+    return register ~= "" and ("[REC @" .. register .. "]") or ""
+end
+
 function FileFlags()
     if vim.bo.modified then
         return "[+]"
@@ -44,10 +49,23 @@ function DiagnosticsCount()
     return "E " .. errors .. ", W " .. warnings
 end
 
+vim.opt.showcmd = true
+vim.opt.showcmdloc = "statusline"
+
+local statusline_group = vim.api.nvim_create_augroup("CustomStatusLine", { clear = true })
+vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+    group = statusline_group,
+    callback = function()
+        vim.cmd.redrawstatus()
+    end,
+})
+
 vim.opt.statusline = " %{v:lua.ModeName()}" .. --
     "  |  %{v:lua.FileFlags()}" ..             --
     "  |  %f" ..                               --
     "  |  %{v:lua.FiletypeText()}" ..          --
     "  |  %{v:lua.DiagnosticsCount()}" ..      --
     "  |  Ln %l, Col %c" ..                    --
-    "  |  %{v:lua.ProgressText()}"
+    "  |  %{v:lua.ProgressText()}" ..          --
+    "%=" ..                                    --
+    "%{v:lua.RecordingStatus()}  %S "          --

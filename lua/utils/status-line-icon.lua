@@ -12,6 +12,11 @@ function ModeName()
     return modes[vim.fn.mode()] or "UNKNOWN"
 end
 
+function RecordingStatus()
+    local register = vim.fn.reg_recording()
+    return register ~= "" and ("󰑋 REC @" .. register) or ""
+end
+
 function FileFlags()
     if vim.bo.modified then
         return "󱇨"
@@ -54,9 +59,22 @@ function DiagnosticsCount()
     return " " .. errors .. "   " .. warnings
 end
 
+vim.opt.showcmd = true
+vim.opt.showcmdloc = "statusline"
+
+local statusline_group = vim.api.nvim_create_augroup("CustomStatusLine", { clear = true })
+vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+    group = statusline_group,
+    callback = function()
+        vim.cmd.redrawstatus()
+    end,
+})
+
 vim.opt.statusline = " %{v:lua.ModeName()}  >  " .. -- 状态
     "%{v:lua.FileFlags()} %f  >  " .. -- 文件名
     "%{v:lua.FiletypeIcon()}  >  " .. -- 文件类型
     "%{v:lua.DiagnosticsCount()}  >  " .. -- 警告
     "↓ %l  → %c  >  " .. -- 行列号
-    "%{v:lua.ProgressIcon()} %p%%" -- 文件进度
+    "%{v:lua.ProgressIcon()} %p%%" .. -- 文件进度
+    "%=" .. -- 右对齐
+    "%{v:lua.RecordingStatus()}  %S " -- 宏录制、按键
