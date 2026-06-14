@@ -9,6 +9,10 @@ if not ok then
 end
 
 conform.setup({
+    formatters_by_ft = {
+        markdown = { "prettier" },
+        python = { "ruff_format" },
+    },
     format_on_save = function(bufnr)
         local formatters = conform.list_formatters_for_buffer(bufnr)
 
@@ -18,3 +22,10 @@ conform.setup({
         }
     end,
 })
+
+vim.keymap.set("n", "<leader>f", function()
+    conform.format({
+        async = true,
+        lsp_format = "fallback",
+    })
+end, { desc = "Conform 代码格式化" })
