@@ -1,21 +1,45 @@
-require("custom.options")
-require("custom.keymaps")
-require("custom.lsp")
-require("custom.appearence")
+local function safe_require(module)
+    local ok, err = xpcall(function()
+        require(module)
+    end, debug.traceback)
 
--- 插件
-require("plugins.mason")
-require("plugins.nvim-treesitter")
-require("plugins.blink")
+    if not ok then
+        vim.notify(
+            "加载模块失败: " .. module .. "\n" .. err,
+            vim.log.levels.ERROR
+        )
+    end
+end
 
-require("plugins.nvim-dap")
+local modules = {
+    "custom.options",
+    "custom.keymaps",
+    "custom.lsp",
+    "custom.appearence",
+    "custom.autocmd",
 
-require("plugins.flash")
-require("plugins.oil")
-require("plugins.mini")
-require("plugins.snacks")
-require("plugins.noice")
+    -- 插件
+    "plugins.nvim-treesitter",
 
-require("plugins.which-key")
-require("plugins.conform")
-require("plugins.im-select")
+    "plugins.mason",
+    "plugins.blink",
+    "plugins.nvim-dap",
+
+    "plugins.snacks",
+    "plugins.oil",
+    "plugins.mini",
+    "plugins.flash",
+    "plugins.nvim-ufo",
+
+    "plugins.dropbar",
+    "plugins.outline",
+
+    "plugins.noice",
+    "plugins.which-key",
+    "plugins.conform",
+    "plugins.im-select",
+}
+
+for _, module in ipairs(modules) do
+    safe_require(module)
+end
